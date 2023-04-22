@@ -28,6 +28,12 @@ router.get('/Checkout', function(req, res, next){
   res.render('Checkout');
 });
 
+// Take the user to the Cart page
+router.get('/Cart', function(req, res, next){
+  res.render('Cart');
+});
+
+
 // Define route for sign-up form submission
 router.post('/signup', (req, res) => {
   // Retrieve username and password from form data
