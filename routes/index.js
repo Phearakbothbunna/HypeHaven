@@ -11,6 +11,7 @@ const sharp = require('sharp');
 
 // Connect to SQLite database
 const db = new sqlite3.Database('./database/usersdb.sqlite');
+const db3 = new sqlite3.Database('./database/productdb.sqlite');
 
 /* GET the Index page */
 router.get('/', function(req, res, next) {
@@ -25,12 +26,28 @@ router.get('/BusinessUpload', function(req, res, next){
 
 // Take the user to the Individual Product Page
 router.get('/Individual', function(req, res, next){
-  res.render('IndividualProduct');
+  const fileId = req.query.id;
+  db3.get('SELECT * FROM images WHERE id = ?', [fileId], function(err, row) {
+    if (err) {
+      console.error(err.message);
+    } else {
+      console.log(row);
+      res.render('IndividualProduct', { file: row });
+    }
+  });
 });
 
 // Take the user to the Checkout page
 router.get('/Checkout', function(req, res, next){
-  res.render('Checkout');
+  const fileId = req.query.id;
+  db3.get('SELECT * FROM images WHERE id = ?', [fileId], function(err, row) {
+    if (err) {
+      console.error(err.message);
+    } else {
+      console.log(row);
+      res.render('Checkout', { file: row });
+    }
+  });
 });
 
 // Take the user to the Cart page
@@ -147,6 +164,24 @@ db2.all(sql2, [], (err, result) => {
       res.send(`<h1>Error</h1>
                 <p>Product not found.</p>`);
     }
+  });
+});
+
+router.post('/placeOrder', (req, res) => {
+  const id = req.body.id;
+  if (!id) {
+    console.log('No ID specified');
+    return res.status(400).send('Bad Request: No ID specified');
+  }
+  // Remove the product from the database
+  db2.run(`DELETE FROM images WHERE id = ?`, [id], function(err) {
+    if (err) {
+      console.log(err.message);
+      return res.status(500).send('Internal Server Error');
+    }
+
+    console.log(`Product with ID ${id} removed from database`);
+    res.send(`Product with ID ${id} removed from database`);
   });
 });
 
