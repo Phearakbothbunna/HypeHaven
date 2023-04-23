@@ -118,9 +118,36 @@ router.get('/ProductPage', (req, res) => {
     if (err) {
       return console.error(err.message);
     }
+    // convert blob data to base64 encoded string for each row
+    // rows.forEach(row => {
+    //   const buffer = Buffer.from(row.data, 'binary');
+    //   row.data = `data:image/jpeg;base64,${buffer.toString('base64')}`;
+    // });
     res.render('ProductPage', { images: rows });
   });
 });
 
+// FOR search functionality
+const sql2 = 'SELECT name FROM images';
+db2.all(sql2, [], (err, result) => {
+  if (err) {
+    return console.error(err.message);
+  }
+  // Extract the names from the result set and store them in a new array
+  const names = result.map(row => row.name);
+
+  router.post('/search', (req, res) => {
+    const searchQuery = req.body.search; // Get the search query from the form
+    // Check if the searchQuery is one of the product names in the names array
+    if (names.includes(searchQuery)) {
+      // Return the product information
+      res.redirect('Individual');
+    } else {
+      // If the search query does not match the product name, return an error message
+      res.send(`<h1>Error</h1>
+                <p>Product not found.</p>`);
+    }
+  });
+});
 
 module.exports = router;
