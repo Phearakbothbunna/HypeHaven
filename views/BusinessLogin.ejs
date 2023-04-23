@@ -2,21 +2,18 @@
 <html>
 	<style>
 		body {
-  background-color: black !important;
-}
-.btn-small {
-  font-size: 12px;
-  padding: 5px 10px;
-}
+			background-color: black !important;
+		}
+		.btn-small {
+			font-size: 12px;
+			padding: 5px 10px;
+		}
 
-.btn-black {
-  background-color: black;
-  border-color: black;
-}
-
-
-		
-		</style>
+		.btn-black {
+			background-color: black;
+			border-color: black;
+		}
+	</style>
 		
 <head>
 	<title>My Web Page</title>
@@ -25,15 +22,15 @@
 />
 <script>
     function validateForm() {
-  var email = document.forms["myForm"]["username"].value;
-  var password = document.forms["myForm"]["password"].value;
-  
-  if (email !== "both@gmail.com" || password !== "22") {
-    alert("Incorrect email or password. Please try again.");
-    return false;
-  } else {
-    return true;
-  }
+	var email = document.forms["myForm"]["username"].value;
+	var password = document.forms["myForm"]["password"].value;
+	
+	if (email !== "both@gmail.com" || password !== "22") {
+		alert("Incorrect email or password. Please try again.");
+		return false;
+	} else {
+		return true;
+	}
 }
 
 </script>
@@ -63,10 +60,8 @@
 					<label class="form-label" for="loginPassword">Password</label>
 				</div>
 		
-		
-				
-					<!-- Submit button -->
-                    <button class="btn-small btn-black"><a href="/BusinessUpload" style="color: white; text-decoration: none;">Login</a></button>
+				<!-- Submit button -->
+				<button class="btn-small btn-black"><a href="/BusinessUpload" style="color: white; text-decoration: none;">Login</a></button>
 
 
 			
