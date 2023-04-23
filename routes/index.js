@@ -9,7 +9,7 @@ const db = new sqlite3.Database('./database/usersdb.sqlite');
 
 /* GET the Index page */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('OpenPage', { title: 'Express' });
 });
 
 
@@ -27,10 +27,18 @@ router.get('/Individual', function(req, res, next){
 router.get('/Checkout', function(req, res, next){
   res.render('Checkout');
 });
+router.get('/BusinessLogin', function(req, res, next){
+  res.render('BusinessLogin');
+});
 
 // Take the user to the Cart page
 router.get('/Cart', function(req, res, next){
   res.render('Cart');
+});
+
+// Take the user to the Individual Product Page
+router.get('/index', function(req, res, next){
+  res.render('index');
 });
 
 
