@@ -8,7 +8,8 @@ const session = require('express-session')
 var indexRouter = require('./routes/index');
 var productRouter = require('./routes/ProductPage');
 var businessRouter = require('./routes/BusinessUpload');
-
+var OpenRouter = require('./routes/OpenPage');
+var BusinessLoginRouter=require('./routes/BusinessLogin');
 var app = express();
 
 // view engine setup
@@ -34,6 +35,8 @@ app.use('/', indexRouter);
 app.use('/ProductPage', productRouter);
 app.use('/BusinessUpload', businessRouter);
 
+app.use('/OpenPage', OpenRouter);
+app.use('/BusinessLogin', BusinessLoginRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
