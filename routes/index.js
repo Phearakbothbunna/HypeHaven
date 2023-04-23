@@ -101,22 +101,27 @@ const upload = multer({
   },
 });
 
-router.post('/upload', upload.single('product-pic'), async (req, res) => {
-  const { buffer, mimetype } = req.file;
+// Upload 3 images
+router.post('/upload', upload.array('product-pic', 3), async (req, res) => {
+  const files = req.files;
   const name = req.body.name;
   const price = req.body.price;
   const description = req.body.description;
 
-  // Resize and optimize the image using Sharp
-  const resizedImage = await sharp(buffer)
-    .resize(800)
-    .jpeg({ quality: 80 })
-    .toBuffer();
-
-  // Insert the image data into the database
+  // Loop through each file and Resize and optimize the image using Sharp
+  const imageBuffers = [];
+  for (const file of files) {
+    const { buffer } = file;
+    const resizedImage = await sharp(buffer)
+      .resize(800)
+      .jpeg({ quality: 80 })
+      .toBuffer();
+      imageBuffers.push(resizedImage);
+  }
+  // Insert the image data into the database (3 images for all view)
   db2.run(
-    'INSERT INTO images (name, data, price, description) VALUES (?, ?, ?, ?)',
-    [name, resizedImage, price, description],
+    'INSERT INTO images (name, data, data2, data3, price, description) VALUES (?, ?, ?, ?, ?, ?)',
+    [name, imageBuffers[0], imageBuffers[1], imageBuffers[2], price, description],
     (err) => {
       if (err) {
         console.error(err);
