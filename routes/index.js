@@ -185,8 +185,9 @@ router.post('/placeOrder', (req, res) => {
       return res.status(500).send('Internal Server Error');
     }
 
-    console.log(`Product with ID ${id} removed from database`);
-    res.send(`Product with ID ${id} removed from database`);
+    // console.log(`Product with ID ${id} removed from database`);
+    // res.send(`Product with ID ${id} removed from database`);
+    res.redirect('/ProductPage')
   });
 });
 
