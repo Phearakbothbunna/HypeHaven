@@ -3,6 +3,11 @@ var router = express.Router();
 const User = require('../models/User')
 const sqlite3 = require('sqlite3').verbose();
 const bodyParser = require('body-parser');
+const multer = require('multer');
+const sharp = require('sharp');
+// const fs = require('fs');
+
+
 
 // Connect to SQLite database
 const db = new sqlite3.Database('./database/usersdb.sqlite');
@@ -65,5 +70,57 @@ router.post('/login', async function(req, res, next){
     // res.status(401).send('Invalid password');
   }
 })
+
+// Handle image upload
+
+// Create a database connection
+const db2 = new sqlite3.Database('./database/productdb.sqlite');
+
+// Setup Multer which can help with file upload
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+      fileSize: 5 * 1024 * 1024, // 5MB limit
+  },
+});
+
+router.post('/upload', upload.single('product-pic'), async (req, res) => {
+  const { buffer, mimetype } = req.file;
+  const name = req.body.name;
+  const price = req.body.price;
+  const description = req.body.description;
+
+  // Resize and optimize the image using Sharp
+  const resizedImage = await sharp(buffer)
+    .resize(800)
+    .jpeg({ quality: 80 })
+    .toBuffer();
+
+  // Insert the image data into the database
+  db2.run(
+    'INSERT INTO images (name, data, price, description) VALUES (?, ?, ?, ?)',
+    [name, resizedImage, price, description],
+    (err) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send('Failed to upload image');
+      } else {
+        res.redirect('/BusinessUpload');
+      }
+    }
+  );
+});
+
+// Retrieve the image, price and description from the database
+router.get('/ProductPage', (req, res) => {
+  const sql = 'SELECT * FROM images';
+  db2.all(sql, [], (err, rows) => {
+    if (err) {
+      return console.error(err.message);
+    }
+    res.render('ProductPage', { images: rows });
+  });
+});
+
 
 module.exports = router;
