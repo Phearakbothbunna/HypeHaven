@@ -158,7 +158,7 @@ db2.all(sql2, [], (err, result) => {
   // Extract the names from the result set and store them in a new array
   const names = result.map(row => row.name);
 
-  router.post('/search', (req, res) => {
+  router.post('/Search', (req, res) => {
     const searchQuery = req.body.search; // Get the search query from the form
     // Check if the searchQuery is one of the product names in the names array
     if (names.includes(searchQuery)) {
