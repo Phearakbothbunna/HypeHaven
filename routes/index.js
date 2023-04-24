@@ -43,6 +43,19 @@ router.get('/Individual', function(req, res, next){
   });
 });
 
+router.get('/IndividualByName', function(req, res, next){
+  const fileName = req.query.name;
+  db3.get('SELECT * FROM images WHERE name = ?', [fileName], function(err, row) {
+    if (err) {
+      console.error(err.message);
+    } else {
+      console.log(row);
+      res.render('IndividualProduct', { file: row });
+    }
+  });
+});
+
+
 // Take the user to the Checkout page
 router.get('/Checkout', function(req, res, next){
   const fileId = req.query.id;
@@ -169,13 +182,15 @@ db2.all(sql2, [], (err, result) => {
     // Check if the searchQuery is one of the product names in the names array
     if (names.includes(searchQuery)) {
       // Return the product information
-      res.redirect('Individual');
+      res.redirect(`/IndividualByName?name=${encodeURIComponent(searchQuery)}`);
     } else {
       // If the search query does not match the product name, return an error message
       res.send(`<h1>Error</h1>
                 <p>Product not found.</p>`);
     }
   });
+  
+  
 });
 
 router.post('/placeOrder', (req, res) => {
