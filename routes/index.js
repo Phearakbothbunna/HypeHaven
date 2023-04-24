@@ -102,7 +102,7 @@ router.post('/login', async function(req, res, next){
   }
   // Redirect them back to the root page
   else{
-    res.redirect("/?msg=InvalidUsernameOrPassword")
+    res.redirect("/index?msg=InvalidUsernameOrPassword")
     // res.status(401).send('Invalid password');
   }
 })
