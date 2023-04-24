@@ -40,8 +40,7 @@ a.lo{
         var email = document.forms["myForm"]["username"].value;
         var password = document.forms["myForm"]["password"].value;
 
-        if (email === "both@gmail.com" || password === "22") {
-            
+        if (email === "both@gmail.com" && password === "22") {
             return true;
         } else {
             alert("Incorrect email or password. Please try again.");
